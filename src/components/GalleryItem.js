@@ -5,7 +5,7 @@ const GalleryItem = ({musicItem}) => {
     let [view, toggleView] = useState(false);
 
     const simpleView = () => (
-        <div style={simpleSyle}>
+        <div style={simpleStyle}>
             <h3>{musicItem.trackName}</h3>
             <h4>{musicItem.collectionName}</h4>
         </div>
@@ -14,7 +14,7 @@ const GalleryItem = ({musicItem}) => {
     
 
     const detailedView = () => (
-        <div>
+        <div style={detailStyle}>
             <h3>{musicItem.trackName}</h3>
             <h4>{musicItem.collectionName}</h4>
             <h4>{musicItem.primaryGenreName}</h4>
@@ -22,14 +22,14 @@ const GalleryItem = ({musicItem}) => {
         </div>
     );
 
-const simpleSyle = {
+const simpleStyle = {
     width: '25vw',
     height: '20vh',
     border: '1px solid black',
     margin: '2px'
 }
 
-const detailedStyle = {
+const detailStyle = {
     width: '80vw',
     height: '20vh',
     border: '1px solid black',
@@ -37,7 +37,7 @@ const detailedStyle = {
     backgroundImage: `url(${musicItem.artworkUrl100})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover', 
-    color: 'white'
+    color: 'white' 
 }
 
     return (
