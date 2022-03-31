@@ -1,46 +1,42 @@
-import { useEffect, useState } from 'react';
+import { useState, useRef } from 'react';
 import Gallery from './components/Gallery';
 import SearchBar from './components/SearchBar';
 import { DataContext } from './contexts/DataContext';
+import { SearchContext } from './contexts/SearchContext';
 import './App.css';
 
 
-const App = () => {
-  let [search, setSearch] = useState('')
-  let [message, setMessage] = useState('Search for Music!')
-  let [data, setData] = useState([])
+function App () {
+  let [message, setMessage] = useState('Search for Music!');
+  let [data, setData] = useState([]);
+  let searchInput = useRef('');
 
-
-  const API_URL = 'https://itunes.apple.com/search?term='
-
-  useEffect(() => {
-      try{
-      if(search) {
-          const fetchData = async () => {
-              const response = await fetch(`${API_URL}${search}`);
-              const resData = await response.json();
-              if (resData.results.length > 0) {
-                  setData(resData.results);
-              } else {
-                  setMessage('Results Not Found');
-              }
-          }
-          fetchData()
-      }
-    }
-    catch (err) {
-        console.error(err);
-    }
-  }, [search])
+  const API_URL = 'https://itunes.apple.com/search?term=';
 
   const handleSearch = (e, userInput) => {
-      e.preventDefault()
-      setSearch(userInput)
-  }
+      e.preventDefault();
+      const fetchData = async () => {
+        const response = await fetch(`${API_URL}${userInput}`);
+        const resData = await response.json();
+        if (resData.results.length > 0) {
+            setData(resData.results);
+        } else {
+            setMessage('Results Not Found');
+        }
+    }
+    fetchData()
+    }
+  
 
   return (
       <div className="App">
-          <SearchBar handleSearch={handleSearch} />
+          <SearchContext.Provider value={{
+              term: searchInput,
+              handleSearch: handleSearch
+          }}>
+            <SearchBar />
+          </SearchContext.Provider>
+          
           <h2>{message}</h2>
           <DataContext.Provider value={data} >
             <Gallery data={data} />
